@@ -18,3 +18,7 @@ Vous avez toutes l'après midi
 
 
 pour lancer incus : ```incus remote add phorge iaas.phorge.fr:443```
+
+
+
+paquet installer et à jour : mais à jour avec autorisations
