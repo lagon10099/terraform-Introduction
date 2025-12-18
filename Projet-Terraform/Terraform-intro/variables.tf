@@ -34,8 +34,8 @@ variable "incus_location" {
     type        = string
 }
 
-variable "cle_privee" {
-    description = "Private SSH key for accessing instances."
-    type        = string
-    sensitive = true
+variable "cle_privee_b64" {
+  type        = string
+  sensitive   = true
+  description = "Clé privée base64"
 }
