@@ -1,0 +1,7 @@
+---
+- name: Apache Installation Run and Deploy Webfile in var/www/html
+  hosts: webservers
+  become: true
+  roles:
+    - apache-install
+    - deploy-webfile
