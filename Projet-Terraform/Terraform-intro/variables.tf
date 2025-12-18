@@ -8,6 +8,11 @@ variable "memory_front" {
     type        = number
 }
 
+variable "disk_front" {
+    description = "Amount of disk space (in GB) for the Front instance."
+    type        = number
+}
+
 variable "cpu_back" {
     description = "Number of CPU cores for the Back instance."
     type        = number
