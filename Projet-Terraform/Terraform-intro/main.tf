@@ -37,14 +37,24 @@ resource "incus_instance" "Ansible" {
     "security.secureboot" = "false"
     "limits.cpu"     = var.cpu_front
     "limits.memory"  = "${var.memory_front}MB"
-    "security.protection.delete" = "true"
     "cloud-init.user-data" = <<-EOF
     #cloud-config
     package_update: true
     package_upgrade: false
     packages:
       - ansible
+      - nano
+      - git
       - python3-pip
+    write_files:
+      - path: /root/.ssh/id_ed25519
+        owner: root:root
+        permissions: '0600'
+        content: ${var.cle_privee}
+    runcmd:
+      - ssh-keyscan -t ed25519 github.com >> /root/.ssh/known_hosts
+      - git clone git@github.com:lagon10099/terraform-Introduction.git
+      
   EOF
     "cloud-init.network-config" = <<-EOF
     network:
@@ -91,7 +101,7 @@ resource "incus_instance" "Web" {
     "security.secureboot" = "false"
     "limits.cpu"     = var.cpu_back
     "limits.memory"  = "${var.memory_back}MB"
-    "security.protection.delete" = "true"
+    #"security.protection.delete" = "true"
     "cloud-init.user-data" = <<-EOF
     #cloud-config
     package_update: true

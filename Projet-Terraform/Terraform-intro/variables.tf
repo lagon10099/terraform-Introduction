@@ -33,3 +33,9 @@ variable "incus_location" {
     description = "Cluster member name to place the instances."
     type        = string
 }
+
+variable "cle_privee" {
+    description = "Private SSH key for accessing instances."
+    type        = string
+    sensitive = true
+}
