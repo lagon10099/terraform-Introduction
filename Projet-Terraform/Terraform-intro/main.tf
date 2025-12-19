@@ -5,7 +5,7 @@ resource "incus_network" "CookedNetwork"{
 
   config = {
     "network"      = "UPLINK"
-    "ipv4.address" = "192.168.2.1/24"
+    "ipv4.address" = "192.168.20.1/24"
     "ipv4.nat"     = "true"
     "ipv6.address" = "none"
     "ipv6.nat"     = "false"
@@ -23,7 +23,7 @@ resource "incus_network_forward" "web_port80" {
   ports = [{
     protocol       = "tcp"
     listen_port    = "80"
-    target_address = "192.168.2.12"
+    target_address = "192.168.20.12"
     target_port    = "80"
     description    = ""
   }]
@@ -60,9 +60,11 @@ write_files:
 runcmd:
   - mkdir -p /root/.ssh && chmod 700 /root/.ssh
   - ssh-keyscan -t ed25519 github.com >> /root/.ssh/known_hosts
-  - ansible-galaxy install geerlingguy.docker
-  - ansible-galaxy install geerlingguy.pip
-  - GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new" git clone git@github.com:lagon10099/terraform-Introduction.git /root/terraform-Introduction || (cat /var/log/cloud-init-output.log && exit 1)
+  - sleep 10
+  - ansible-galaxy install geerlingguy.docker -f
+  - ansible-galaxy install geerlingguy.pip -f
+  - rm -rf /root/terraform-Introduction
+  - GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new" git clone git@github.com:lagon10099/terraform-Introduction.git /root/terraform-Introduction
   - cd /root/terraform-Introduction/Projet-Terraform/Ansible && ansible-playbook -i inventories/production/hosts -u debian --private-key /root/.ssh/id_ed25519 playbooks/deploy-webfile.yml
 EOF
     "cloud-init.network-config" = <<EOF
@@ -72,7 +74,7 @@ network:
     enp5s0:
       dhcp4: false
       dhcp6: false
-      addresses: [192.168.2.11/24]
+      addresses: [192.168.20.11/24]
       gateway4: 192.168.2.1
       nameservers:
         addresses: [1.1.1.1, 8.8.8.8]
@@ -133,7 +135,7 @@ network:
     enp5s0:
       dhcp4: false
       dhcp6: false
-      addresses: [192.168.2.12/24]
+      addresses: [192.168.20.12/24]
       gateway4: 192.168.2.1
       nameservers:
         addresses: [1.1.1.1, 8.8.8.8]

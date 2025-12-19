@@ -13,7 +13,7 @@ terraform {
 
 provider "incus" {
     remote {
-        name    = "phorge"   
+        name    = "phorge"
     }
 }
 
