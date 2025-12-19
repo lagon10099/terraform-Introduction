@@ -19,7 +19,7 @@ locals {
 resource "incus_network_forward" "web_port80" {
   project = "CookedTeam"
   network = incus_network.CookedNetwork.name
-  listen_address = "10.3.0.16"
+  listen_address = "10.3.0.17"
   ports = [{
     protocol       = "tcp"
     listen_port    = "80"
