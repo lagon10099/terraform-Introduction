@@ -1,0 +1,42 @@
+---
+- name: Installation via Roles
+  hosts: webservers
+  become: true
+  
+  vars:
+    # Configuration pour le role
+    docker_install_compose_plugin: true
+    docker_users: ["debian"]
+    pip_install_packages:
+      - name: docker
+
+  roles:
+    - geerlingguy.pip
+    - geerlingguy.docker
+
+  post_tasks:
+    - name: S'assurer que Docker est démarré
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+# Déploiement wordpressss
+    - name: Créer le dossier /opt/wordpress
+      ansible.builtin.file:
+        path: /opt/wordpress
+        state: directory
+        mode: '0755'
+
+    - name: Copier le fichier docker-compose
+      ansible.builtin.copy:
+        src: docker-compose.yml
+        dest: /opt/wordpress/docker-compose.yml
+        mode: '0644'
+
+    - name: Démarrer le Docker Compose
+      ansible.builtin.shell:
+        cmd: docker compose up -d
+        chdir: /opt/wordpress
+      register: compose_output
+      changed_when: "'Started' in compose_output.stdout or 'Created' in compose_output.stdout"

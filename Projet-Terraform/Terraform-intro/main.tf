@@ -47,6 +47,7 @@ package_update: true
 package_upgrade: false
 packages:
   - ansible
+  - curl
   - nano
   - git
   - python3-pip
@@ -59,6 +60,7 @@ write_files:
 runcmd:
   - mkdir -p /root/.ssh && chmod 700 /root/.ssh
   - ssh-keyscan -t ed25519 github.com >> /root/.ssh/known_hosts
+  - ansible-galaxy install geerlingguy.docker
   - GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new" git clone git@github.com:lagon10099/terraform-Introduction.git /root/terraform-Introduction || (cat /var/log/cloud-init-output.log && exit 1)
   - cd /root/terraform-Introduction/Projet-Terraform/Ansible && ansible-playbook -i inventories/production/hosts -u debian --private-key /root/.ssh/id_ed25519 playbooks/deploy-webfile.yml
 EOF

@@ -1,0 +1,6 @@
+---
+- name: Deploy Docker for WordPress
+  hosts: webservers
+  become: true
+  roles:
+    - docker-install-wordpress

@@ -1,5 +1,4 @@
 ---
-
 - name: Patch Management Playbook
   hosts: webservers
   become: true
