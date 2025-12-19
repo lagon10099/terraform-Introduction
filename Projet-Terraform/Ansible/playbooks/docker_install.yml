@@ -1,6 +1,19 @@
 ---
-- name: Deploy Docker for WordPress
+- name: Installation complète
   hosts: webservers
   become: true
+
+  # Configuration des variables pour les rôles geerlingguy
+  vars:
+    docker_install_compose_plugin: true
+    docker_users: ["debian"]
+    pip_install_packages:
+      - name: docker
+
   roles:
+    # 1. On lance les rôles téléchargés
+    - geerlingguy.pip
+    - geerlingguy.docker
+    
+    # 2. On lance TON rôle (celui qui installe WordPress)
     - docker-install-wordpress
